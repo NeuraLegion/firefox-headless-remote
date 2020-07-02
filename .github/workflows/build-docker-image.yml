@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: 0 0 * * 3
   push:
+    branches:
+      - nogod
 
 jobs:
   build:
@@ -11,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build Docker image
-        run: docker build . --file Dockerfile --tag neuralegion/firefox-headless-remote
+        run: docker build . --file Dockerfile --tag neuralegion/firefox-headless-remote:nogod
       - name: Login into Docker
         run: docker login --username=anatol1988 --password=${{ secrets.DOCKER_TOKEN }}
       - name: Push Docker image
