@@ -1,7 +1,7 @@
 FROM ubuntu:focal
 
 RUN apt-get update && \
-    apt-get --no-install-recommends --yes install firefox=77\* dumb-init build-essential socat wget fontconfig && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends --yes install firefox=77\* dumb-init build-essential socat wget fontconfig && \
     groupadd firefox && \
     useradd --create-home --gid firefox firefox && \
     chown --recursive firefox:firefox /home/firefox/
