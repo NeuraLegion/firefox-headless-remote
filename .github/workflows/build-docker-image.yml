@@ -17,4 +17,4 @@ jobs:
       - name: Login into Docker
         run: docker login --username=anatol1988 --password=${{ secrets.DOCKER_TOKEN }}
       - name: Push Docker image
-        run: docker push neuralegion/firefox-headless-remote
+        run: docker push neuralegion/firefox-headless-remote:nogod
