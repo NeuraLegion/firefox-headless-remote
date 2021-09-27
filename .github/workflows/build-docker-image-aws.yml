@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  schedule:
+    - cron: 0 0 * * 3
+  push:
+
+jobs:
+  make-release:
+    runs-on: ubuntu-20.04
+    container:
+      image: neuralegion/devops
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login into ECR
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: eval $(aws ecr get-login --no-include-email)
+      - name: Build release
+        env:
+          AWS_DOCKER_REGISTRY: ${{ secrets.AWS_DOCKER_REGISTRY }}
+        run: |
+          set -x
+          docker build . \
+            --tag "neuralegion/firefox-headless-remote" \
+            --build-arg SSH_PRIVATE_KEY="${{ secrets.NEXPLOIT_MACHINE_USER }}" \
+          docker push --all-tags $AWS_DOCKER_REGISTRY
