@@ -20,7 +20,7 @@ VOLUME ["/home/firefox/.fonts"]
 
 COPY --chown=firefox:firefox entrypoint.sh /home/firefox/
 COPY --chown=firefox:firefox profile/ /home/firefox/profile/
-COPY --chown=firefox:firefox firefox.god /home/firefox/
+COPY --chown=firefox:firefox firefox.eye /home/firefox/
 
 USER firefox
 
