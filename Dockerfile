@@ -17,8 +17,7 @@ RUN apt-get update && \
 
 # install pre built gem
 COPY eye-0.10.1.pre.gem /tmp/
-RUN gem install /tmp/eye-0.10.1.pre.gem && \
-  rm /tmp/eye-0.10.1.pre.gem
+RUN gem install /tmp/eye-0.10.1.pre.gem -N && rm /tmp/eye-0.10.1.pre.gem
 
 # Install firefox
 RUN curl --location "https://ftp.mozilla.org/pub/firefox/releases/94.0.1/linux-x86_64/en-US/firefox-94.0.1.tar.bz2" \
