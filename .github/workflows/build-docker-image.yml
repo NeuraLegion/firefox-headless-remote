@@ -11,6 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Login to ECR
         shell: bash
         run: $(aws ecr get-login --no-include-email)
@@ -18,10 +19,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
-      - uses: actions/checkout@v1
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag 454884832027.dkr.ecr.us-east-1.amazonaws.com/firefox-headless-remote
-      # - name: Login into Docker
-      #  run: docker login --username=anatol1988 --password=${{ secrets.DOCKER_TOKEN }}
       - name: Push Docker image
        run: docker push 454884832027.dkr.ecr.us-east-1.amazonaws.com/firefox-headless-remote
