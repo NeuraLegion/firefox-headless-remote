@@ -5,8 +5,8 @@ Dockerized Firefox in headless [Marionette](https://vakila.github.io/blog/marion
 ## Usage
 # build
 ```sh
-docker pull deepsweet/firefox-headless-remote:68
-docker run -it --rm --shm-size 2g -p 2828:2828 deepsweet/firefox-headless-remote:68
+docker build -t firefox-headless . 
+docker run -it --rm --shm-size 2g -p 2828:2828 firefox-headless
 ```
 
 Example using [Foxr](https://github.com/deepsweet/foxr):
