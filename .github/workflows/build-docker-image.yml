@@ -10,24 +10,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     container: neuralegion/devops
     steps:
       - uses: actions/checkout@v1
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Build Docker image
-        run: docker build . --file Dockerfile 
+        run: docker build . --file Dockerfile
             --tag 454884832027.dkr.ecr.us-east-1.amazonaws.com/firefox-headless-remote
             --tag neuralegion/firefox-headless-remote
       - name: Login into Docker
         run: docker login --username=anatol1988 --password=${{ secrets.DOCKER_TOKEN }}
-      - name: Login in ECR
-        run: eval $(aws ecr get-login --no-include-email)
       - name: Push Docker image to Docker Hub
         run: docker push neuralegion/firefox-headless-remote
       - name: Push Docker image to AWS ECR
